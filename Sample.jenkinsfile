@@ -18,14 +18,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'dotnet build'
+                sh 'dotnet build ./DotnetSample/DotnetSample.sln'
             }
         }
         // stage('Test') {
         //     steps {
         //         echo 'Testing...'
         //         sh """
-        //         ssh sakuya@${TEST_SERVER} 'cd /path/to/your/project && dotnet test'
+        //         ssh sakuya@${TEST_SERVER} 'cd /path/to/your/project && dotnet test ./DotnetSample/DotnetSample.sln'
         //         """
         //     }
         // }
@@ -34,8 +34,8 @@ pipeline {
                 echo 'Deploying...'
                 sh """
                 ssh sakuya@${DEPLOY_SERVER} 'mkdir -p /var/www/dotnet-sample'
-                scp -r ./bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/var/www/dotnet-sample/
-                ssh sakuya@${DEPLOY_SERVER} 'cd /var/www/dotnet-sample && dotnet .NET-Sample.dll'
+                scp -r ./DotnetSample/bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/var/www/dotnet-sample/
+                ssh sakuya@${DEPLOY_SERVER} 'cd /var/www/dotnet-sample && dotnet DotnetSample.dll'
                 """
             }
         }
