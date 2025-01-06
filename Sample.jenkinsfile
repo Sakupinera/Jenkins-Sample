@@ -33,7 +33,7 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 sh """
-                ssh sakuya@${DEPLOY_SERVER} 'mkdir -p /home/sakuya/dotnet-sample'
+                ssh sakuya@${DEPLOY_SERVER} 'sudo mkdir -p /home/sakuya/dotnet-sample'
                 scp -r ./DotnetSample/bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/home/sakuya/dotnet-sample/
                 ssh sakuya@${DEPLOY_SERVER} 'cd /home/sakuya/dotnet-sample && dotnet DotnetSample.dll'
                 """
