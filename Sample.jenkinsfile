@@ -29,15 +29,16 @@ pipeline {
         //         """
         //     }
         // }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
-                sh """
-                ssh -o StrictHostKeyChecking=no sakuya@${DEPLOY_SERVER} 'sudo mkdir -p /home/sakuya/dotnet-sample'
-                scp -r ./DotnetSample/bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/home/sakuya/dotnet-sample/
-                ssh -o StrictHostKeyChecking=no sakuya@${DEPLOY_SERVER} 'cd /home/sakuya/dotnet-sample && sudo dotnet DotnetSample.dll'
-                """
-            }
-        }
+stage('Deploy') {
+    steps {
+        echo 'Deploying...'
+        sh """
+        ssh -o StrictHostKeyChecking=no sakuya@${DEPLOY_SERVER} 'echo 1234567s | sudo -S mkdir -p /home/sakuya/dotnet-sample'
+        scp -r ./DotnetSample/bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/home/sakuya/dotnet-sample/
+        ssh -o StrictHostKeyChecking=no sakuya@${DEPLOY_SERVER} 'cd /home/sakuya/dotnet-sample && echo 1234567s | sudo -S dotnet DotnetSample.dll'
+        """
+    }
+}
+
     }
 }
