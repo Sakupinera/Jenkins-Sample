@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         GIT_REPO = 'https://github.com/Sakupinera/.NET-Sample.git'
+        GIT_BRANCH = 'main'
         TEST_SERVER = '192.168.118.98'
         DEPLOY_SERVER = '192.168.118.98'
     }
@@ -11,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out source code...'
-                git url: "${GIT_REPO}"
+                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
             }
         }
         stage('Build') {
