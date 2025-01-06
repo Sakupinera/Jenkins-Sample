@@ -1,20 +1,41 @@
 pipeline {
     agent any
 
+    environment {
+        GIT_REPO = 'https://github.com/Sakupinera/.NET-Sample.git'
+        TEST_SERVER = '192.168.118.98'
+        DEPLOY_SERVER = '192.168.118.98'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out source code...'
+                git url: "${GIT_REPO}"
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Building...'
+                sh 'dotnet build'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         echo 'Testing...'
+        //         sh """
+        //         ssh sakuya@${TEST_SERVER} 'cd /path/to/your/project && dotnet test'
+        //         """
+        //     }
+        // }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo 'Deploying...'
+                sh """
+                ssh sakuya@${DEPLOY_SERVER} 'mkdir -p /var/www/dotnet-sample'
+                scp -r ./bin/Release/net8.0/publish/* sakuya@${DEPLOY_SERVER}:/var/www/dotnet-sample/
+                ssh sakuya@${DEPLOY_SERVER} 'cd /var/www/dotnet-sample && dotnet .NET-Sample.dll'
+                """
             }
         }
     }
